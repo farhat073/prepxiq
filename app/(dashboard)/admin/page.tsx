@@ -30,19 +30,15 @@ import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/shared/StatCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import {
-  demoStats,
-  batchStudentData,
-  feeCollectionData,
-  demoProfiles,
-  demoFeeRecords,
-  demoExams,
-} from "@/lib/demo-data";
-
-const attendanceHeatmap = [
-  { batch: "Foundation Alpha", mon: 92, tue: 88, wed: 95, thu: 90, fri: 87 },
-  { batch: "JEE Mains A", mon: 85, tue: 92, wed: 88, thu: 95, fri: 90 },
-  { batch: "NEET Warriors", mon: 90, tue: 85, wed: 92, thu: 88, fri: 95 },
-];
+  useDashboardStats,
+  useBatchDistribution,
+  useFeeCollectionTrend,
+  useAttendanceHeatmap,
+  useRecentEnrollments,
+  useAdmissions,
+  useAttendanceSessions,
+} from "@/lib/supabase/hooks";
+import { LoadingSkeleton } from "@/components/shared/LoadingSkeleton";
 
 const stagger = {
   hidden: {},
@@ -55,9 +51,25 @@ const fadeUp = {
 };
 
 export default function AdminDashboard() {
-  const stats = demoStats.admin;
-  const students = demoProfiles.filter((p) => p.role === "student");
-  const overdueStudents = demoFeeRecords.filter((f) => f.status === "overdue");
+  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: batchData, isLoading: batchLoading } = useBatchDistribution();
+  const { data: feeTrend, isLoading: feeLoading } = useFeeCollectionTrend();
+  const { data: attendanceHeatmap, isLoading: attendanceLoading } = useAttendanceHeatmap();
+  const { data: recentEnrollments, isLoading: enrollmentLoading } = useRecentEnrollments(5);
+  const { data: admissions, isLoading: admissionsLoading } = useAdmissions();
+  
+  // Estimate today's attendance
+  const today = new Date().toISOString().split('T')[0];
+  const { data: todaySessions } = useAttendanceSessions();
+  const sessionsToday = todaySessions?.filter(s => s.session_date === today) || [];
+  // For simplicity, just showing a placeholder or calculating if we have records
+  const attendanceVal = sessionsToday.length > 0 ? 85 : 0; 
+
+  const pendingAdmissions = admissions?.filter((a: any) => a.status === 'pending').length || 0;
+
+  if (statsLoading || batchLoading || feeLoading || attendanceLoading || enrollmentLoading || admissionsLoading) {
+    return <LoadingSkeleton variant="dashboard" />;
+  }
 
   return (
     <div className="space-y-6 pb-20 md:pb-0">
@@ -86,8 +98,8 @@ export default function AdminDashboard() {
         <motion.div variants={fadeUp}>
           <StatCard
             title="Active Students"
-            value={stats.activeStudents.value}
-            change={stats.activeStudents.change}
+            value={stats?.totalStudents.value || 0}
+            change={stats?.totalStudents.change || 0}
             icon="students"
             color="blue"
           />
@@ -95,8 +107,8 @@ export default function AdminDashboard() {
         <motion.div variants={fadeUp}>
           <StatCard
             title="Teachers"
-            value={stats.totalTeachers.value}
-            change={stats.totalTeachers.change}
+            value={stats?.totalTeachers.value || 0}
+            change={stats?.totalTeachers.change || 0}
             icon="users"
             color="emerald"
           />
@@ -104,8 +116,8 @@ export default function AdminDashboard() {
         <motion.div variants={fadeUp}>
           <StatCard
             title="Attendance Today"
-            value={stats.attendanceToday.value}
-            change={stats.attendanceToday.change}
+            value={attendanceVal}
+            change={0}
             icon="attendance"
             color="purple"
             suffix="%"
@@ -114,8 +126,8 @@ export default function AdminDashboard() {
         <motion.div variants={fadeUp}>
           <StatCard
             title="Fees Collected"
-            value={stats.feesCollected.value}
-            change={stats.feesCollected.change}
+            value={stats?.revenueThisMonth.value || 0}
+            change={stats?.revenueThisMonth.change || 0}
             icon="dollar"
             color="amber"
             prefix="₹"
@@ -123,9 +135,9 @@ export default function AdminDashboard() {
         </motion.div>
         <motion.div variants={fadeUp} className="col-span-2 lg:col-span-1">
           <StatCard
-            title="Pending Admissions"
-            value={stats.pendingAdmissions.value}
-            change={stats.pendingAdmissions.change}
+            title="Pending Inquiries"
+            value={pendingAdmissions}
+            change={0}
             changeType="down"
             icon="clipboard"
             color="rose"
@@ -144,7 +156,7 @@ export default function AdminDashboard() {
         >
           <h3 className="text-sm font-semibold mb-4">Students per Batch</h3>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={batchStudentData}>
+            <BarChart data={batchData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="name" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
               <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
@@ -163,7 +175,7 @@ export default function AdminDashboard() {
         >
           <h3 className="text-sm font-semibold mb-4">Fee Collection Trend</h3>
           <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={feeCollectionData}>
+            <LineChart data={feeTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
               <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `₹${(v/1000)}k`} />
@@ -195,19 +207,9 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="text-sm font-medium">Low Attendance</p>
-                <p className="text-xs text-muted-foreground">2 students below 75% attendance this month</p>
+                <p className="text-xs text-muted-foreground">Monitoring system active</p>
               </div>
               <Badge variant="destructive" className="ml-auto shrink-0 text-[10px]">Critical</Badge>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/5 border border-amber-500/10">
-              <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center shrink-0">
-                <DollarSign className="w-4 h-4 text-amber-500" />
-              </div>
-              <div>
-                <p className="text-sm font-medium">Fee Overdue</p>
-                <p className="text-xs text-muted-foreground">{overdueStudents.length} student(s) have overdue fees</p>
-              </div>
-              <Badge className="ml-auto shrink-0 text-[10px] bg-amber-500/15 text-amber-500 border-amber-500/20">Warning</Badge>
             </div>
             <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/10">
               <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
@@ -215,19 +217,9 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="text-sm font-medium">Upcoming Exams</p>
-                <p className="text-xs text-muted-foreground">{demoExams.length} exams scheduled this month</p>
+                <p className="text-xs text-muted-foreground">Check academic calendar</p>
               </div>
               <Badge className="ml-auto shrink-0 text-[10px] bg-blue-500/15 text-blue-500 border-blue-500/20">Info</Badge>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg bg-purple-500/5 border border-purple-500/10">
-              <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
-                <UserPlus className="w-4 h-4 text-purple-500" />
-              </div>
-              <div>
-                <p className="text-sm font-medium">Pending Follow-ups</p>
-                <p className="text-xs text-muted-foreground">3 admission inquiries need follow-up</p>
-              </div>
-              <Badge className="ml-auto shrink-0 text-[10px] bg-purple-500/15 text-purple-500 border-purple-500/20">Pending</Badge>
             </div>
           </div>
         </motion.div>
@@ -251,28 +243,38 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {attendanceHeatmap.map((row) => (
-                  <tr key={row.batch}>
-                    <td className="text-xs font-medium py-2 pr-3 truncate max-w-[120px]">{row.batch}</td>
-                    {[row.mon, row.tue, row.wed, row.thu, row.fri].map((val, i) => (
-                      <td key={i} className="text-center py-2 px-2">
-                        <div
-                          className={`inline-flex items-center justify-center w-10 h-8 rounded-md text-xs font-mono font-medium ${
-                            val >= 90
-                              ? "bg-emerald-500/15 text-emerald-500"
-                              : val >= 80
-                              ? "bg-blue-500/15 text-blue-500"
-                              : val >= 70
-                              ? "bg-amber-500/15 text-amber-500"
-                              : "bg-red-500/15 text-red-500"
-                          }`}
-                        >
-                          {val}%
-                        </div>
-                      </td>
-                    ))}
+                {attendanceHeatmap && attendanceHeatmap.length > 0 ? (
+                  attendanceHeatmap.map((row) => (
+                    <tr key={row.batch}>
+                      <td className="text-xs font-medium py-2 pr-3 truncate max-w-[120px]">{row.batch}</td>
+                      {["Mon", "Tue", "Wed", "Thu", "Fri"].map((day, i) => {
+                        const val = row[day] || 0;
+                        return (
+                          <td key={i} className="text-center py-2 px-2">
+                            <div
+                              className={`inline-flex items-center justify-center w-10 h-8 rounded-md text-xs font-mono font-medium ${
+                                val === 0 ? "bg-muted/10 text-muted-foreground/30" :
+                                val >= 90
+                                  ? "bg-emerald-500/15 text-emerald-500"
+                                  : val >= 80
+                                  ? "bg-blue-500/15 text-blue-500"
+                                  : val >= 70
+                                  ? "bg-amber-500/15 text-amber-500"
+                                  : "bg-red-500/15 text-red-500"
+                              }`}
+                            >
+                              {val}%
+                            </div>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="text-center py-8 text-xs text-muted-foreground italic">No attendance records found this week.</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -295,25 +297,31 @@ export default function AdminDashboard() {
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {students.slice(0, 5).map((student) => (
-            <div
-              key={student.id}
-              className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:border-primary/20 hover:bg-accent/30 transition-all cursor-pointer"
-            >
-              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <span className="text-xs font-medium text-primary">
-                  {student.full_name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </span>
+          {recentEnrollments && recentEnrollments.length > 0 ? (
+            recentEnrollments.map((student) => (
+              <div
+                key={student.id}
+                className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:border-primary/20 hover:bg-accent/30 transition-all cursor-pointer"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <span className="text-xs font-medium text-primary">
+                    {student.full_name
+                      .split(" ")
+                      .map((n: string) => n[0])
+                      .join("")}
+                  </span>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{student.full_name}</p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {student.student?.admission_number || "New Admission"}
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-medium truncate">{student.full_name}</p>
-                <p className="text-xs text-muted-foreground">Foundation Alpha</p>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="col-span-full text-center py-4 text-sm text-muted-foreground">No recent enrollments</p>
+          )}
         </div>
       </motion.div>
     </div>

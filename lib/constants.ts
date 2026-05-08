@@ -7,6 +7,7 @@ export const APP_TAGLINE = "Where Learning Meets Excellence";
 export const ROLES = {
   SUPERADMIN: "superadmin",
   ADMIN: "admin",
+  CLASS_MANAGER: "class_manager",
   TEACHER: "teacher",
   STUDENT: "student",
 } as const;
@@ -17,6 +18,7 @@ export type UserRole = (typeof ROLES)[keyof typeof ROLES];
 export const ROLE_LABELS: Record<UserRole, string> = {
   superadmin: "Super Admin",
   admin: "Admin",
+  class_manager: "Class Manager",
   teacher: "Teacher",
   student: "Student",
 };
@@ -25,6 +27,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 export const ROLE_COLORS: Record<UserRole, string> = {
   superadmin: "bg-purple-500/15 text-purple-400 border-purple-500/20",
   admin: "bg-blue-500/15 text-blue-400 border-blue-500/20",
+  class_manager: "bg-cyan-500/15 text-cyan-400 border-cyan-500/20",
   teacher: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
   student: "bg-amber-500/15 text-amber-400 border-amber-500/20",
 };
@@ -33,6 +36,7 @@ export const ROLE_COLORS: Record<UserRole, string> = {
 export const ROLE_DASHBOARDS: Record<UserRole, string> = {
   superadmin: "/superadmin",
   admin: "/admin",
+  class_manager: "/class-manager",
   teacher: "/teacher",
   student: "/student",
 };

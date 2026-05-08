@@ -31,7 +31,7 @@ const createSchema = z.object({
   full_name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["superadmin", "admin", "teacher", "student"]),
+  role: z.enum(["superadmin", "admin", "class_manager", "teacher", "student"]),
   phone: z.string().optional(),
 });
 
@@ -41,7 +41,7 @@ type CreateFormValues = z.infer<typeof createSchema>;
 const editSchema = z.object({
   full_name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email"),
-  role: z.enum(["superadmin", "admin", "teacher", "student"]),
+  role: z.enum(["superadmin", "admin", "class_manager", "teacher", "student"]),
   phone: z.string().optional(),
   is_active: z.boolean(),
 });
@@ -120,6 +120,7 @@ export function UserFormDialog({ open, onOpenChange, onSuccess }: UserFormDialog
                 <SelectContent>
                   <SelectItem value="superadmin">Super Admin</SelectItem>
                   <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="class_manager">Class Manager</SelectItem>
                   <SelectItem value="teacher">Teacher</SelectItem>
                   <SelectItem value="student">Student</SelectItem>
                 </SelectContent>
@@ -292,6 +293,7 @@ export function EditUserDialog({ open, onOpenChange, user, onSuccess }: EditUser
                 <SelectContent>
                   <SelectItem value="superadmin">Super Admin</SelectItem>
                   <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="class_manager">Class Manager</SelectItem>
                   <SelectItem value="teacher">Teacher</SelectItem>
                   <SelectItem value="student">Student</SelectItem>
                 </SelectContent>

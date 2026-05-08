@@ -63,7 +63,7 @@
   --card-foreground: oklch(0.15 0.015 250);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.015 250);
-  --primary: oklch(0.55 0.22 260);
+  --primary: oklch(0.65 0.2 165);
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.96 0.005 250);
   --secondary-foreground: oklch(0.2 0.015 250);
@@ -74,8 +74,8 @@
   --destructive: oklch(0.6 0.22 25);
   --border: oklch(0.92 0.005 250);
   --input: oklch(0.92 0.005 250);
-  --ring: oklch(0.55 0.22 260);
-  --chart-1: oklch(0.55 0.22 260);
+  --ring: oklch(0.65 0.2 165);
+  --chart-1: oklch(0.65 0.2 165);
   --chart-2: oklch(0.7 0.18 160);
   --chart-3: oklch(0.75 0.15 85);
   --chart-4: oklch(0.65 0.2 310);
@@ -83,12 +83,12 @@
   --radius: 0.75rem;
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: oklch(0.15 0.015 250);
-  --sidebar-primary: oklch(0.55 0.22 260);
+  --sidebar-primary: oklch(0.65 0.2 165);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.96 0.005 250);
   --sidebar-accent-foreground: oklch(0.2 0.015 250);
   --sidebar-border: oklch(0.92 0.005 250);
-  --sidebar-ring: oklch(0.55 0.22 260);
+  --sidebar-ring: oklch(0.65 0.2 165);
 }
 
 /* ─── Dark Mode (Default - PrepXIQ Deep Navy) ────── */
@@ -99,7 +99,7 @@
   --card-foreground: oklch(0.95 0.005 250);
   --popover: oklch(0.2 0.02 255);
   --popover-foreground: oklch(0.95 0.005 250);
-  --primary: oklch(0.62 0.22 260);
+  --primary: oklch(0.65 0.2 165);
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.25 0.02 255);
   --secondary-foreground: oklch(0.95 0.005 250);
@@ -110,7 +110,7 @@
   --destructive: oklch(0.65 0.22 25);
   --border: oklch(0.3 0.02 255);
   --input: oklch(0.3 0.02 255);
-  --ring: oklch(0.62 0.22 260);
+  --ring: oklch(0.65 0.2 165);
   --chart-1: oklch(0.62 0.22 260);
   --chart-2: oklch(0.7 0.18 160);
   --chart-3: oklch(0.75 0.15 85);
@@ -118,12 +118,12 @@
   --chart-5: oklch(0.65 0.22 25);
   --sidebar: oklch(0.16 0.02 255);
   --sidebar-foreground: oklch(0.95 0.005 250);
-  --sidebar-primary: oklch(0.62 0.22 260);
+  --sidebar-primary: oklch(0.65 0.2 165);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.25 0.02 255);
   --sidebar-accent-foreground: oklch(0.95 0.005 250);
   --sidebar-border: oklch(0.3 0.02 255);
-  --sidebar-ring: oklch(0.62 0.22 260);
+  --sidebar-ring: oklch(0.65 0.2 165);
 }
 
 @layer base {

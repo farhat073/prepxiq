@@ -1,0 +1,210 @@
+app/(dashboard)/admin/admissions/page.tsx(51,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/admissions/page.tsx(179,46): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/announcements/page.tsx(36,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/announcements/page.tsx(63,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/announcements/page.tsx(66,28): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/announcements/page.tsx(85,99): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/attendance/mark/page.tsx(75,11): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/attendance/mark/page.tsx(89,39): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/attendance/mark/page.tsx(98,41): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/attendance/page.tsx(27,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/attendance/page.tsx(34,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/attendance/page.tsx(46,43): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/attendance/page.tsx(58,45): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/attendance/page.tsx(101,88): error TS2322: Type '{ children: Element; variant: "ghost"; size: "sm"; className: string; asChild: true; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+app/(dashboard)/admin/batches/page.tsx(37,64): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/batches/page.tsx(74,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/batches/page.tsx(123,46): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/batches/promote/page.tsx(122,47): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/batches/promote/page.tsx(220,47): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/batches/promote/page.tsx(234,47): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/exams/new/page.tsx(68,11): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/exams/new/page.tsx(94,97): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/new/page.tsx(107,109): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/new/page.tsx(119,101): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/new/page.tsx(128,103): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/page.tsx(47,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/exams/page.tsx(82,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/exams/page.tsx(85,28): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/exams/page.tsx(104,99): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/page.tsx(117,111): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/page.tsx(126,103): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/page.tsx(135,105): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/exams/page.tsx(188,42): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/exams/page.tsx(194,41): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & MenuItemProps & { inset?: boolean | undefined; variant?: "default" | "destructive" | undefined; }'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & MenuItemProps & { inset?: boolean | undefined; variant?: "default" | "destructive" | undefined; }'.
+app/(dashboard)/admin/exams/page.tsx(230,80): error TS2322: Type '{ children: Element; size: "sm"; variant: "outline"; className: string; asChild: true; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+app/(dashboard)/admin/exams/scores/page.tsx(82,45): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/exams/scores/page.tsx(95,11): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/exams/scores/page.tsx(109,40): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/fees/collect/page.tsx(60,11): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/fees/collect/page.tsx(70,80): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'SetStateAction<string>'.
+  Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/fees/collect/page.tsx(86,50): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/fees/collect/page.tsx(115,42): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/fees/page.tsx(85,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/fees/page.tsx(127,38): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/fees/page.tsx(187,46): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/fees/page.tsx(249,45): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/fees/reports/page.tsx(19,45): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/fees/reports/page.tsx(34,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/materials/page.tsx(50,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/materials/page.tsx(75,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/materials/page.tsx(78,28): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/materials/page.tsx(98,107): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/materials/page.tsx(107,105): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/materials/page.tsx(119,101): error TS2322: Type 'string | null' is not assignable to type 'string'.
+  Type 'null' is not assignable to type 'string'.
+app/(dashboard)/admin/materials/page.tsx(162,41): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/materials/page.tsx(169,43): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/admin/materials/page.tsx(191,42): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/page.tsx(71,29): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/reports/page.tsx(22,96): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/reports/page.tsx(29,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/teachers/page.tsx(24,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/teachers/page.tsx(36,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/teachers/page.tsx(73,42): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/admin/timetable/page.tsx(22,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/admin/timetable/page.tsx(34,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/admin/timetable/page.tsx(45,41): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/student/notices/page.tsx(16,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/student/notices/page.tsx(23,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/superadmin/audit-logs/page.tsx(79,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/superadmin/page.tsx(66,29): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/superadmin/reports/page.tsx(19,77): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/superadmin/reports/page.tsx(26,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/superadmin/settings/academic-years/page.tsx(15,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/superadmin/settings/academic-years/page.tsx(22,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/superadmin/settings/grades/page.tsx(14,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/superadmin/settings/grades/page.tsx(30,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/superadmin/settings/levels/page.tsx(25,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/superadmin/settings/levels/page.tsx(57,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/superadmin/settings/page.tsx(39,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/superadmin/settings/page.tsx(61,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/superadmin/settings/subjects/page.tsx(28,42): error TS2322: Type '"dashboard"' is not assignable to type '"form" | "table" | "cards" | "chart" | undefined'.
+app/(dashboard)/superadmin/settings/subjects/page.tsx(65,9): error TS2322: Type '{ title: string; subtitle: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'icon' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+app/(dashboard)/teacher/homework/[id]/page.tsx(221,107): error TS2322: Type '{ children: Element; variant: "outline"; className: string; asChild: true; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+app/(dashboard)/teacher/materials/page.tsx(15,3): error TS2305: Module '"lucide-react"' has no exported member 'Youtube'.
+app/(dashboard)/teacher/materials/page.tsx(128,26): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/teacher/materials/page.tsx(258,41): error TS2322: Type 'Dispatch<SetStateAction<string>>' is not assignable to type '(value: string | null, eventDetails: SelectRootChangeEventDetails) => void'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'string | null' is not assignable to type 'SetStateAction<string>'.
+      Type 'null' is not assignable to type 'SetStateAction<string>'.
+app/(dashboard)/teacher/materials/page.tsx(293,46): error TS2322: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+app/(dashboard)/teacher/materials/page.tsx(331,21): error TS2322: Type '{ children: Element; className: string; variant: "ghost"; asChild: true; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & ButtonProps & VariantProps<(props?: (ConfigVariants<{ variant: { default: string; outline: string; secondary: string; ghost: string; destructive: string; link: string; }; size: { ...; }; }> & ClassProp) | undefined) => string>'.
+components/dialogs/BatchFormDialog.tsx(62,5): error TS2322: Type 'Resolver<{ name: string; level_id: string; branch_id: string; academic_year_id: string; capacity: unknown; is_active: boolean; code?: string | undefined; start_date?: string | undefined; end_date?: string | undefined; start_time?: string | undefined; end_time?: string | undefined; }, any, { ...; }>' is not assignable to type 'Resolver<{ name: string; level_id: string; branch_id: string; academic_year_id: string; capacity: number; is_active: boolean; code?: string | undefined; start_date?: string | undefined; end_date?: string | undefined; start_time?: string | undefined; end_time?: string | undefined; }, any, { ...; }>'.
+  Types of parameters 'options' and 'options' are incompatible.
+    Type 'ResolverOptions<{ name: string; level_id: string; branch_id: string; academic_year_id: string; capacity: number; is_active: boolean; code?: string | undefined; start_date?: string | undefined; end_date?: string | undefined; start_time?: string | undefined; end_time?: string | undefined; }>' is not assignable to type 'ResolverOptions<{ name: string; level_id: string; branch_id: string; academic_year_id: string; capacity: unknown; is_active: boolean; code?: string | undefined; start_date?: string | undefined; end_date?: string | undefined; start_time?: string | undefined; end_time?: string | undefined; }>'.
+      Type 'unknown' is not assignable to type 'number'.
+components/dialogs/BatchFormDialog.tsx(117,43): error TS2345: Argument of type '(data: BatchFormValues) => Promise<void>' is not assignable to parameter of type 'SubmitHandler<TFieldValues>'.
+  Types of parameters 'data' and 'data' are incompatible.
+    Type 'TFieldValues' is not assignable to type '{ name: string; level_id: string; branch_id: string; academic_year_id: string; capacity: number; is_active: boolean; code?: string | undefined; start_date?: string | undefined; end_date?: string | undefined; start_time?: string | undefined; end_time?: string | undefined; }'.
+      Type 'FieldValues' is missing the following properties from type '{ name: string; level_id: string; branch_id: string; academic_year_id: string; capacity: number; is_active: boolean; code?: string | undefined; start_date?: string | undefined; end_date?: string | undefined; start_time?: string | undefined; end_time?: string | undefined; }': name, level_id, branch_id, academic_year_id, and 2 more.
+components/dialogs/BatchFormDialog.tsx(131,73): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+components/dialogs/BatchFormDialog.tsx(146,74): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+components/dialogs/BatchFormDialog.tsx(161,81): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+components/dialogs/LevelFormDialog.tsx(43,5): error TS2322: Type 'Resolver<{ name: string; order_index: unknown; min_score_to_promote: unknown; description?: string | undefined; }, any, { name: string; order_index: number; min_score_to_promote: number; description?: string | undefined; }>' is not assignable to type 'Resolver<{ name: string; order_index: number; min_score_to_promote: number; description?: string | undefined; }, any, { name: string; order_index: number; min_score_to_promote: number; description?: string | undefined; }>'.
+  Types of parameters 'options' and 'options' are incompatible.
+    Type 'ResolverOptions<{ name: string; order_index: number; min_score_to_promote: number; description?: string | undefined; }>' is not assignable to type 'ResolverOptions<{ name: string; order_index: unknown; min_score_to_promote: unknown; description?: string | undefined; }>'.
+      Type 'unknown' is not assignable to type 'number'.
+components/dialogs/LevelFormDialog.tsx(82,43): error TS2345: Argument of type '(data: LevelFormValues) => Promise<void>' is not assignable to parameter of type 'SubmitHandler<TFieldValues>'.
+  Types of parameters 'data' and 'data' are incompatible.
+    Type 'TFieldValues' is not assignable to type '{ name: string; order_index: number; min_score_to_promote: number; description?: string | undefined; }'.
+      Type 'FieldValues' is missing the following properties from type '{ name: string; order_index: number; min_score_to_promote: number; description?: string | undefined; }': name, order_index, min_score_to_promote

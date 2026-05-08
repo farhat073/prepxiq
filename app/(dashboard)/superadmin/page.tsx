@@ -30,18 +30,14 @@ import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/shared/StatCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import {
-  demoStats,
-  enrollmentChartData,
-  batchStudentData,
-  demoAuditLogs,
-  demoProfiles,
-} from "@/lib/demo-data";
+  useDashboardStats,
+  useEnrollmentTrend,
+  useBatchDistribution,
+  useRecentActivity,
+} from "@/lib/supabase/hooks";
+import { LoadingSkeleton } from "@/components/shared/LoadingSkeleton";
+import { ClipboardList as AuditIcon } from "lucide-react";
 
-const statusDistribution = [
-  { name: "Active", value: 8, color: "#10B981" },
-  { name: "Inactive", value: 1, color: "#6B7280" },
-  { name: "Graduated", value: 1, color: "#3B82F6" },
-];
 
 const stagger = {
   hidden: {},
@@ -56,7 +52,20 @@ const fadeUp = {
 };
 
 export default function SuperadminDashboard() {
-  const stats = demoStats.superadmin;
+  const { data: stats, isLoading: statsLoading } = useDashboardStats();
+  const { data: enrollmentData, isLoading: enrollmentLoading } = useEnrollmentTrend();
+  const { data: batchData, isLoading: batchLoading } = useBatchDistribution();
+  const { data: recentActivity, isLoading: activityLoading } = useRecentActivity(5);
+
+  if (statsLoading || enrollmentLoading || batchLoading || activityLoading) {
+    return <LoadingSkeleton variant="dashboard" />;
+  }
+
+  const statusDistribution = [
+    { name: "Active Students", value: stats?.totalStudents.value || 0, color: "#10B981" },
+    { name: "Teachers", value: stats?.totalTeachers.value || 0, color: "#3B82F6" },
+    { name: "Branches", value: stats?.totalBranches.value || 0, color: "#8B5CF6" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -87,8 +96,8 @@ export default function SuperadminDashboard() {
         <motion.div variants={fadeUp}>
           <StatCard
             title="Total Students"
-            value={stats.totalStudents.value}
-            change={stats.totalStudents.change}
+            value={stats?.totalStudents.value || 0}
+            change={stats?.totalStudents.change || 0}
             icon="students"
             color="blue"
           />
@@ -96,8 +105,8 @@ export default function SuperadminDashboard() {
         <motion.div variants={fadeUp}>
           <StatCard
             title="Total Teachers"
-            value={stats.totalTeachers.value}
-            change={stats.totalTeachers.change}
+            value={stats?.totalTeachers.value || 0}
+            change={stats?.totalTeachers.change || 0}
             icon="users"
             color="emerald"
           />
@@ -105,17 +114,17 @@ export default function SuperadminDashboard() {
         <motion.div variants={fadeUp}>
           <StatCard
             title="Total Branches"
-            value={stats.totalBranches.value}
-            change={stats.totalBranches.change}
+            value={stats?.totalBranches.value || 0}
+            change={stats?.totalBranches.change || 0}
             icon="branch"
             color="purple"
           />
         </motion.div>
         <motion.div variants={fadeUp}>
           <StatCard
-            title="Revenue This Month"
-            value={stats.revenueThisMonth.value}
-            change={stats.revenueThisMonth.change}
+            title="Revenue Total"
+            value={stats?.revenueThisMonth.value || 0}
+            change={stats?.revenueThisMonth.change || 0}
             icon="dollar"
             color="amber"
             prefix="₹"
@@ -134,7 +143,7 @@ export default function SuperadminDashboard() {
         >
           <h3 className="text-sm font-semibold mb-4">Enrollment Trend</h3>
           <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={enrollmentChartData}>
+            <LineChart data={enrollmentData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis
                 dataKey="month"
@@ -212,9 +221,9 @@ export default function SuperadminDashboard() {
         </motion.div>
       </div>
 
-      {/* Bottom Row: Students per Branch + Recent Activity */}
+      {/* Bottom Row: Students per Batch + Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Students per Branch */}
+        {/* Students per Batch */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -223,7 +232,7 @@ export default function SuperadminDashboard() {
         >
           <h3 className="text-sm font-semibold mb-4">Students per Batch</h3>
           <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={batchStudentData}>
+            <BarChart data={batchData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis
                 dataKey="name"
@@ -262,32 +271,36 @@ export default function SuperadminDashboard() {
             </Button>
           </div>
           <div className="space-y-3">
-            {demoAuditLogs.slice(0, 5).map((log) => (
-              <div
-                key={log.id}
-                className="flex items-start gap-3 pb-3 border-b border-border/30 last:border-0 last:pb-0"
-              >
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <ClipboardList className="w-3.5 h-3.5 text-primary" />
+            {recentActivity && recentActivity.length > 0 ? (
+              recentActivity.map((log) => (
+                <div
+                  key={log.id}
+                  className="flex items-start gap-3 pb-3 border-b border-border/30 last:border-0 last:pb-0"
+                >
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <AuditIcon className="w-3.5 h-3.5 text-primary" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm">
+                      <span className="font-medium">{log.user?.full_name}</span>{" "}
+                      <span className="text-muted-foreground">{log.action}</span>{" "}
+                      a{" "}
+                      <span className="font-medium">{log.resource}</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {new Date(log.created_at).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm">
-                    <span className="font-medium">{log.user?.full_name}</span>{" "}
-                    <span className="text-muted-foreground">{log.action}</span>{" "}
-                    a{" "}
-                    <span className="font-medium">{log.resource}</span>
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {new Date(log.created_at).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-8">No recent activity</p>
+            )}
           </div>
         </motion.div>
       </div>

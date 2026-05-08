@@ -3,7 +3,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface LoadingSkeletonProps {
-  variant?: "table" | "cards" | "form" | "chart";
+  variant?: "table" | "cards" | "form" | "chart" | "dashboard";
   rows?: number;
   columns?: number;
 }
@@ -13,7 +13,7 @@ export function LoadingSkeleton({
   rows = 5,
   columns = 5,
 }: LoadingSkeletonProps) {
-  if (variant === "cards") {
+  if (variant === "cards" || variant === "dashboard") {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (

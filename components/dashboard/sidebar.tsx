@@ -60,6 +60,15 @@ const navConfig: Record<UserRole, NavItem[]> = {
     },
     { title: "Branches", href: "/superadmin/branches", icon: Building2 },
     {
+      title: "Fees & Finance",
+      href: "/superadmin/fees",
+      icon: DollarSign,
+      children: [
+        { title: "Fee Overview", href: "/superadmin/fees" },
+        { title: "Collect Fee", href: "/superadmin/fees/collect" },
+      ],
+    },
+    {
       title: "System Settings",
       href: "/superadmin/settings",
       icon: Settings,
@@ -88,6 +97,15 @@ const navConfig: Record<UserRole, NavItem[]> = {
     { title: "Teachers", href: "/admin/teachers", icon: UserCheck },
     { title: "Batches & Levels", href: "/admin/batches", icon: BookOpen },
     {
+      title: "Assign",
+      href: "/admin/assign",
+      icon: Shield,
+      children: [
+        { title: "Teacher → Batch", href: "/admin/assign/teachers" },
+        { title: "Student → Batch", href: "/admin/assign/students" },
+      ],
+    },
+    {
       title: "Attendance",
       href: "/admin/attendance",
       icon: CalendarCheck,
@@ -106,25 +124,19 @@ const navConfig: Record<UserRole, NavItem[]> = {
         { title: "Score Entry", href: "/admin/exams/scores" },
       ],
     },
-    {
-      title: "Fees",
-      href: "/admin/fees",
-      icon: DollarSign,
-      children: [
-        { title: "Fee Overview", href: "/admin/fees" },
-        { title: "Collect Fee", href: "/admin/fees/collect" },
-        { title: "Reports", href: "/admin/fees/reports" },
-      ],
-    },
     { title: "Announcements", href: "/admin/announcements", icon: Megaphone },
     { title: "Timetable", href: "/admin/timetable", icon: Calendar },
     { title: "Study Materials", href: "/admin/materials", icon: FolderOpen },
     { title: "Reports", href: "/admin/reports", icon: BarChart3 },
   ],
+  class_manager: [
+    { title: "Dashboard", href: "/class-manager", icon: Home },
+    { title: "Manage Classes", href: "/class-manager/classes", icon: CalendarCheck },
+  ],
   teacher: [
     { title: "My Dashboard", href: "/teacher", icon: Home },
-    { title: "My Batches", href: "/teacher/my-batches", icon: BookOpen },
-    { title: "My Students", href: "/teacher/students", icon: Users },
+    { title: "Batch Info", href: "/teacher/batch-info", icon: BookOpen },
+    { title: "My Classes", href: "/teacher/classes", icon: Calendar },
     { title: "Mark Attendance", href: "/teacher/attendance", icon: CalendarCheck },
     {
       title: "Exams & Scores",
@@ -144,7 +156,6 @@ const navConfig: Record<UserRole, NavItem[]> = {
     { title: "My Performance", href: "/student/scores", icon: Trophy },
     { title: "My Attendance", href: "/student/attendance", icon: CalendarCheck },
     { title: "Timetable", href: "/student/timetable", icon: Calendar },
-    { title: "Exam Results", href: "/student/exams", icon: FileText },
     { title: "Study Materials", href: "/student/materials", icon: FolderOpen },
     { title: "Homework", href: "/student/homework", icon: BookMarked },
     { title: "Notices", href: "/student/notices", icon: Bell },

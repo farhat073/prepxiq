@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, Save, User, BookOpen, UserPlus } from "lucide-react";
+import { ChevronRight, ChevronLeft, Save, User, BookOpen, UserPlus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -20,12 +20,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLevels, useBatches } from "@/lib/supabase/hooks";
+import { useAppStore } from "@/store/useAppStore";
 
-// Simplified Zod Schema for the Multi-step Form
 const studentFormSchema = z.object({
   // Step 1: Personal Details
   full_name: z.string().min(2, "Full name is required"),
   email: z.string().email("Valid email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
   phone: z.string().min(10, "Valid phone number is required"),
   date_of_birth: z.string().min(1, "Date of birth is required"),
   gender: z.enum(["male", "female", "other"]),
@@ -52,13 +54,18 @@ const steps = [
 
 export default function AddStudentPage() {
   const router = useRouter();
+  const profile = useAppStore((s) => s.profile);
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Live data from database
+  const { data: levels, isLoading: levelsLoading } = useLevels();
+  const { data: batches, isLoading: batchesLoading } = useBatches();
 
   const form = useForm<StudentFormValues>({
     resolver: zodResolver(studentFormSchema),
     defaultValues: {
-      full_name: "", email: "", phone: "", date_of_birth: "", gender: "male",
+      full_name: "", email: "", password: "", phone: "", date_of_birth: "", gender: "male",
       school_name: "", class_in_school: "", level_id: "", batch_id: "",
       father_name: "", mother_name: "", guardian_phone: "",
     },
@@ -67,9 +74,15 @@ export default function AddStudentPage() {
 
   const { register, handleSubmit, formState: { errors }, trigger, setValue, watch } = form;
 
+  // Filter batches by selected level
+  const selectedLevelId = watch("level_id");
+  const filteredBatches = batches?.filter((b: any) => 
+    !selectedLevelId || b.level_id === selectedLevelId
+  );
+
   const handleNext = async () => {
     let fieldsToValidate: any[] = [];
-    if (currentStep === 0) fieldsToValidate = ["full_name", "email", "phone", "date_of_birth", "gender"];
+    if (currentStep === 0) fieldsToValidate = ["full_name", "email", "password", "phone", "date_of_birth", "gender"];
     if (currentStep === 1) fieldsToValidate = ["school_name", "class_in_school", "level_id", "batch_id"];
     
     const isStepValid = await trigger(fieldsToValidate as any);
@@ -81,16 +94,40 @@ export default function AddStudentPage() {
   const onSubmit = async (data: StudentFormValues) => {
     setIsSubmitting(true);
     try {
-      // Here we will eventually send to Supabase
-      console.log("Submitting:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          full_name: data.full_name,
+          role: "student",
+          phone: data.phone,
+          date_of_birth: data.date_of_birth,
+          gender: data.gender,
+          branch_id: profile?.branch_id || null,
+          // Student-specific fields
+          school_name: data.school_name,
+          class_in_school: data.class_in_school,
+          level_id: data.level_id,
+          batch_id: data.batch_id,
+          father_name: data.father_name,
+          mother_name: data.mother_name,
+          guardian_phone: data.guardian_phone,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to create student");
+      }
       
       toast.success("Student Added Successfully", {
         description: `${data.full_name} has been enrolled in the system.`,
       });
       router.push("/admin/students");
-    } catch (error) {
-      toast.error("Failed to add student");
+    } catch (error: any) {
+      toast.error("Failed to add student", { description: error.message });
     } finally {
       setIsSubmitting(false);
     }
@@ -162,6 +199,11 @@ export default function AddStudentPage() {
                       {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
                     </div>
                     <div className="space-y-2">
+                      <Label>Password <span className="text-destructive">*</span></Label>
+                      <Input {...register("password")} type="password" placeholder="Min 6 characters" className={errors.password ? "border-destructive" : ""} />
+                      {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
+                    </div>
+                    <div className="space-y-2">
                       <Label>Phone Number <span className="text-destructive">*</span></Label>
                       <Input {...register("phone")} placeholder="e.g. 9876543210" className={errors.phone ? "border-destructive" : ""} />
                       {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
@@ -171,7 +213,7 @@ export default function AddStudentPage() {
                       <Input {...register("date_of_birth")} type="date" className={errors.date_of_birth ? "border-destructive" : ""} />
                       {errors.date_of_birth && <p className="text-xs text-destructive">{errors.date_of_birth.message}</p>}
                     </div>
-                    <div className="space-y-2 md:col-span-2">
+                    <div className="space-y-2">
                       <Label>Gender <span className="text-destructive">*</span></Label>
                       <Select onValueChange={(val) => setValue("gender", val as any)} defaultValue={watch("gender")}>
                         <SelectTrigger className={errors.gender ? "border-destructive" : ""}>
@@ -202,27 +244,35 @@ export default function AddStudentPage() {
                     </div>
                     <div className="space-y-2">
                       <Label>PrepXIQ Level <span className="text-destructive">*</span></Label>
-                      <Select onValueChange={(val) => setValue("level_id", val as string)}>
+                      <Select onValueChange={(val) => { setValue("level_id", val as string); setValue("batch_id", ""); }} disabled={levelsLoading}>
                         <SelectTrigger className={errors.level_id ? "border-destructive" : ""}>
-                          <SelectValue placeholder="Select a level" />
+                          <SelectValue placeholder={levelsLoading ? "Loading levels..." : "Select a level"} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="l1">Foundation (Class 8-10)</SelectItem>
-                          <SelectItem value="l2">JEE Mains Targeted</SelectItem>
-                          <SelectItem value="l3">NEET Targeted</SelectItem>
+                          {levels?.map((level: any) => (
+                            <SelectItem key={level.id} value={level.id}>
+                              {level.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       {errors.level_id && <p className="text-xs text-destructive">{errors.level_id.message}</p>}
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <Label>Assign Batch <span className="text-destructive">*</span></Label>
-                      <Select onValueChange={(val) => setValue("batch_id", val as string)}>
+                      <Select onValueChange={(val) => setValue("batch_id", val as string)} disabled={batchesLoading || !selectedLevelId}>
                         <SelectTrigger className={errors.batch_id ? "border-destructive" : ""}>
-                          <SelectValue placeholder="Select a batch" />
+                          <SelectValue placeholder={!selectedLevelId ? "Select a level first" : batchesLoading ? "Loading batches..." : "Select a batch"} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="b1">Foundation Alpha (Mon/Wed/Fri)</SelectItem>
-                          <SelectItem value="b2">JEE Mains A (Tue/Thu/Sat)</SelectItem>
+                          {filteredBatches?.map((batch: any) => (
+                            <SelectItem key={batch.id} value={batch.id}>
+                              {batch.name} ({batch.enrolled_count || 0}/{batch.capacity || "∞"})
+                            </SelectItem>
+                          ))}
+                          {filteredBatches?.length === 0 && (
+                            <SelectItem value="none" disabled>No batches for this level</SelectItem>
+                          )}
                         </SelectContent>
                       </Select>
                       {errors.batch_id && <p className="text-xs text-destructive">{errors.batch_id.message}</p>}
@@ -273,6 +323,7 @@ export default function AddStudentPage() {
               </Button>
             ) : (
               <Button type="submit" disabled={isSubmitting} className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                 {isSubmitting ? "Enrolling..." : "Complete Enrollment"}
                 {!isSubmitting && <Save className="w-4 h-4 ml-2" />}
               </Button>

@@ -1,10 +1,8 @@
 -- ================================================================
--- PREPXIQ ERP — COMPLETE DATABASE SCHEMA
+-- PREPXIQ ERP — COMPLETE DATABASE SCHEMA (v2)
 -- ================================================================
--- This is the SINGLE source of truth for the entire database.
--- Run this ONCE in your Supabase SQL Editor.
--- If you have already run previous scripts, this is safe to re-run
--- because it uses CREATE TABLE IF NOT EXISTS and DROP POLICY IF EXISTS.
+-- SINGLE source of truth. Safe to re-run any number of times.
+-- All statements use IF NOT EXISTS / IF EXISTS / OR REPLACE.
 -- ================================================================
 
 
@@ -16,10 +14,9 @@ CREATE EXTENSION IF NOT EXISTS "pg_trgm";
 
 
 -- =====================
--- TABLE DEFINITIONS
+-- 1. TABLE DEFINITIONS
 -- =====================
 
--- 1. PROFILES (extends auth.users)
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   role TEXT NOT NULL CHECK (role IN ('superadmin', 'admin', 'teacher', 'student')),
@@ -37,7 +34,6 @@ CREATE TABLE IF NOT EXISTS profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. BRANCHES
 CREATE TABLE IF NOT EXISTS branches (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -51,13 +47,11 @@ CREATE TABLE IF NOT EXISTS branches (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Add FK from profiles -> branches (safe if already exists)
 DO $$ BEGIN
   ALTER TABLE profiles ADD CONSTRAINT fk_branch FOREIGN KEY (branch_id) REFERENCES branches(id);
 EXCEPTION WHEN duplicate_object THEN NULL;
 END $$;
 
--- 3. ACADEMIC YEARS
 CREATE TABLE IF NOT EXISTS academic_years (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -68,7 +62,6 @@ CREATE TABLE IF NOT EXISTS academic_years (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. SUBJECTS
 CREATE TABLE IF NOT EXISTS subjects (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -79,7 +72,6 @@ CREATE TABLE IF NOT EXISTS subjects (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 5. LEVELS
 CREATE TABLE IF NOT EXISTS levels (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -90,7 +82,6 @@ CREATE TABLE IF NOT EXISTS levels (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 6. BATCHES
 CREATE TABLE IF NOT EXISTS batches (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -110,7 +101,6 @@ CREATE TABLE IF NOT EXISTS batches (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. BATCH SUBJECTS
 CREATE TABLE IF NOT EXISTS batch_subjects (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   batch_id UUID REFERENCES batches(id) ON DELETE CASCADE,
@@ -120,7 +110,6 @@ CREATE TABLE IF NOT EXISTS batch_subjects (
   UNIQUE(batch_id, subject_id)
 );
 
--- 8. STUDENT PROFILES
 CREATE TABLE IF NOT EXISTS student_profiles (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   profile_id UUID UNIQUE REFERENCES profiles(id) ON DELETE CASCADE,
@@ -144,7 +133,6 @@ CREATE TABLE IF NOT EXISTS student_profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 9. TEACHER PROFILES
 CREATE TABLE IF NOT EXISTS teacher_profiles (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   profile_id UUID UNIQUE REFERENCES profiles(id) ON DELETE CASCADE,
@@ -158,7 +146,6 @@ CREATE TABLE IF NOT EXISTS teacher_profiles (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 10. ADMISSIONS
 CREATE TABLE IF NOT EXISTS admissions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   full_name TEXT NOT NULL,
@@ -178,7 +165,6 @@ CREATE TABLE IF NOT EXISTS admissions (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 11. ATTENDANCE SESSIONS
 CREATE TABLE IF NOT EXISTS attendance_sessions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   batch_id UUID REFERENCES batches(id),
@@ -193,7 +179,6 @@ CREATE TABLE IF NOT EXISTS attendance_sessions (
   UNIQUE(batch_id, subject_id, session_date)
 );
 
--- 12. ATTENDANCE RECORDS
 CREATE TABLE IF NOT EXISTS attendance_records (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   session_id UUID REFERENCES attendance_sessions(id) ON DELETE CASCADE,
@@ -204,7 +189,6 @@ CREATE TABLE IF NOT EXISTS attendance_records (
   marked_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 13. EXAMS
 CREATE TABLE IF NOT EXISTS exams (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
@@ -222,7 +206,6 @@ CREATE TABLE IF NOT EXISTS exams (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 14. EXAM SCORES
 CREATE TABLE IF NOT EXISTS exam_scores (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   exam_id UUID REFERENCES exams(id) ON DELETE CASCADE,
@@ -238,7 +221,6 @@ CREATE TABLE IF NOT EXISTS exam_scores (
   UNIQUE(exam_id, student_id)
 );
 
--- 15. FEE STRUCTURES
 CREATE TABLE IF NOT EXISTS fee_structures (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
@@ -253,7 +235,6 @@ CREATE TABLE IF NOT EXISTS fee_structures (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 16. FEE RECORDS
 CREATE TABLE IF NOT EXISTS fee_records (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   student_id UUID REFERENCES profiles(id),
@@ -274,7 +255,6 @@ CREATE TABLE IF NOT EXISTS fee_records (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 17. STUDY MATERIALS
 CREATE TABLE IF NOT EXISTS study_materials (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
@@ -289,7 +269,6 @@ CREATE TABLE IF NOT EXISTS study_materials (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 18. HOMEWORK
 CREATE TABLE IF NOT EXISTS homework (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
@@ -304,7 +283,6 @@ CREATE TABLE IF NOT EXISTS homework (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 19. HOMEWORK SUBMISSIONS
 CREATE TABLE IF NOT EXISTS homework_submissions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   homework_id UUID REFERENCES homework(id) ON DELETE CASCADE,
@@ -316,7 +294,6 @@ CREATE TABLE IF NOT EXISTS homework_submissions (
   status TEXT DEFAULT 'submitted' CHECK (status IN ('submitted','reviewed','late'))
 );
 
--- 20. ANNOUNCEMENTS
 CREATE TABLE IF NOT EXISTS announcements (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
@@ -332,7 +309,6 @@ CREATE TABLE IF NOT EXISTS announcements (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 21. TIMETABLE
 CREATE TABLE IF NOT EXISTS timetable (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   batch_id UUID REFERENCES batches(id),
@@ -347,7 +323,6 @@ CREATE TABLE IF NOT EXISTS timetable (
   is_active BOOLEAN DEFAULT true
 );
 
--- 22. NOTIFICATIONS
 CREATE TABLE IF NOT EXISTS notifications (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
@@ -359,7 +334,6 @@ CREATE TABLE IF NOT EXISTS notifications (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 23. AUDIT LOGS
 CREATE TABLE IF NOT EXISTS audit_logs (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES profiles(id),
@@ -373,9 +347,23 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS teacher_attendance (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  teacher_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  branch_id UUID REFERENCES branches(id),
+  date DATE NOT NULL,
+  status TEXT DEFAULT 'present' CHECK (status IN ('present', 'absent', 'late', 'on_leave')),
+  lectures_delivered INTEGER DEFAULT 0,
+  notes TEXT,
+  marked_by UUID REFERENCES profiles(id),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(teacher_id, date)
+);
+
 
 -- =====================
--- ENABLE ROW LEVEL SECURITY ON ALL TABLES
+-- 2. ENABLE ROW LEVEL SECURITY
 -- =====================
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE branches ENABLE ROW LEVEL SECURITY;
@@ -400,11 +388,11 @@ ALTER TABLE announcements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE timetable ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE teacher_attendance ENABLE ROW LEVEL SECURITY;
 
 
 -- =====================
--- DROP ALL OLD POLICIES & FUNCTIONS (clean slate)
--- First drop policies on ALL tables that reference get_my_role() or get_user_role()
+-- 3. DROP ALL OLD POLICIES (clean slate)
 -- =====================
 DO $$ 
 DECLARE 
@@ -414,7 +402,8 @@ DECLARE
     'attendance_sessions', 'audit_logs', 'batch_subjects', 'batches', 
     'exam_scores', 'exams', 'fee_records', 'fee_structures', 'homework', 
     'homework_submissions', 'levels', 'notifications', 'student_profiles', 
-    'study_materials', 'subjects', 'teacher_profiles', 'timetable'
+    'study_materials', 'subjects', 'teacher_profiles', 'timetable',
+    'teacher_attendance'
   ];
 BEGIN 
   FOR t IN SELECT unnest(all_tables) LOOP
@@ -425,7 +414,6 @@ BEGIN
   END LOOP;
 END $$;
 
--- Now drop profiles policies
 DROP POLICY IF EXISTS "Profiles are viewable by self" ON profiles;
 DROP POLICY IF EXISTS "Superadmins can view all profiles" ON profiles;
 DROP POLICY IF EXISTS "Admins can view branch profiles" ON profiles;
@@ -441,18 +429,23 @@ DROP POLICY IF EXISTS "superadmin_all" ON profiles;
 DROP POLICY IF EXISTS "profiles_own" ON profiles;
 DROP POLICY IF EXISTS "admin_read_branch_profiles" ON profiles;
 DROP POLICY IF EXISTS "Branches are viewable by everyone" ON branches;
+DROP POLICY IF EXISTS "Admins can manage teacher attendance" ON teacher_attendance;
+DROP POLICY IF EXISTS "Teachers can view own attendance" ON teacher_attendance;
 
--- NOW safe to drop the functions (no more dependents)
+
+-- =====================
+-- 4. DROP OLD FUNCTIONS
+-- =====================
 DROP FUNCTION IF EXISTS public.get_my_role();
 DROP FUNCTION IF EXISTS public.get_user_role();
 
 
 -- =====================
--- HELPER FUNCTION: get_user_role()
--- SECURITY DEFINER = bypasses RLS when querying profiles (no recursion)
--- STABLE = cacheable within a transaction for performance
+-- 5. HELPER FUNCTION (moved to private schema to hide from public API and fix linter warning)
 -- =====================
-CREATE OR REPLACE FUNCTION public.get_user_role()
+CREATE SCHEMA IF NOT EXISTS private;
+
+CREATE OR REPLACE FUNCTION private.get_user_role()
 RETURNS text
 LANGUAGE sql
 STABLE
@@ -462,51 +455,50 @@ AS $$
   SELECT role FROM public.profiles WHERE id = auth.uid();
 $$;
 
--- Only authenticated users should call this (not anon/public)
-REVOKE ALL ON FUNCTION public.get_user_role() FROM PUBLIC;
-REVOKE ALL ON FUNCTION public.get_user_role() FROM anon;
-GRANT EXECUTE ON FUNCTION public.get_user_role() TO authenticated;
+-- Only authenticated users can call this (required by RLS policies)
+REVOKE ALL ON FUNCTION private.get_user_role() FROM PUBLIC;
+REVOKE ALL ON FUNCTION private.get_user_role() FROM anon;
+GRANT EXECUTE ON FUNCTION private.get_user_role() TO authenticated;
 
 
 -- =====================
--- PROFILES POLICIES
+-- 6. CREATE POLICIES
 -- =====================
-DROP POLICY IF EXISTS "Users can view own profile" ON profiles;
+
 CREATE POLICY "Users can view own profile" ON profiles
   FOR SELECT USING (auth.uid() = id);
 
-DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
 CREATE POLICY "Users can update own profile" ON profiles
   FOR UPDATE USING (auth.uid() = id);
 
-DROP POLICY IF EXISTS "Admins can view all profiles" ON profiles;
 CREATE POLICY "Admins can view all profiles" ON profiles
-  FOR SELECT USING (public.get_user_role() IN ('admin', 'superadmin'));
+  FOR SELECT USING (private.get_user_role() IN ('admin', 'superadmin'));
 
-DROP POLICY IF EXISTS "Admins can insert profiles" ON profiles;
 CREATE POLICY "Admins can insert profiles" ON profiles
-  FOR INSERT WITH CHECK (public.get_user_role() IN ('admin', 'superadmin'));
+  FOR INSERT WITH CHECK (private.get_user_role() IN ('admin', 'superadmin'));
 
-DROP POLICY IF EXISTS "Admins can update all profiles" ON profiles;
 CREATE POLICY "Admins can update all profiles" ON profiles
-  FOR UPDATE USING (public.get_user_role() IN ('admin', 'superadmin'));
+  FOR UPDATE USING (private.get_user_role() IN ('admin', 'superadmin'));
 
-DROP POLICY IF EXISTS "Admins can delete profiles" ON profiles;
 CREATE POLICY "Admins can delete profiles" ON profiles
-  FOR DELETE USING (public.get_user_role() IN ('admin', 'superadmin'));
+  FOR DELETE USING (private.get_user_role() IN ('admin', 'superadmin'));
 
-
--- =====================
--- BRANCHES POLICY (public read)
--- =====================
-DROP POLICY IF EXISTS "Branches are viewable by everyone" ON branches;
 CREATE POLICY "Branches are viewable by everyone" ON branches
   FOR SELECT USING (true);
 
+CREATE POLICY "Admins can manage teacher attendance" ON teacher_attendance
+  FOR ALL TO authenticated
+  USING (EXISTS (
+    SELECT 1 FROM profiles 
+    WHERE profiles.id = auth.uid() 
+    AND ((role = 'admin' AND branch_id = teacher_attendance.branch_id)
+    OR role = 'superadmin')
+  ));
 
--- =====================
--- ALL OTHER TABLES: Admin full access + Authenticated read
--- =====================
+CREATE POLICY "Teachers can view own attendance" ON teacher_attendance
+  FOR SELECT TO authenticated
+  USING (teacher_id = auth.uid());
+
 DO $$ 
 DECLARE 
   t text;
@@ -519,13 +511,8 @@ DECLARE
   ];
 BEGIN 
   FOR t IN SELECT unnest(tables_to_fix) LOOP
-    EXECUTE format('DROP POLICY IF EXISTS "Admins can do everything" ON %I', t);
-    EXECUTE format('DROP POLICY IF EXISTS "Authenticated users can view" ON %I', t);
-    EXECUTE format('DROP POLICY IF EXISTS "Admins full access" ON %I', t);
-    EXECUTE format('DROP POLICY IF EXISTS "Authenticated read access" ON %I', t);
-
     EXECUTE format(
-      'CREATE POLICY "Admins full access" ON %I FOR ALL USING (public.get_user_role() IN (''admin'', ''superadmin''))',
+      'CREATE POLICY "Admins full access" ON %I FOR ALL USING (private.get_user_role() IN (''admin'', ''superadmin''))',
       t
     );
     EXECUTE format(
@@ -537,8 +524,10 @@ END $$;
 
 
 -- =====================
--- TRIGGER: AUTO-CREATE PROFILE ON NEW USER SIGNUP
+-- 7. TRIGGERS & FUNCTIONS
 -- =====================
+
+-- Auto-create profile on signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -553,15 +542,79 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
--- Drop and recreate to avoid duplicate trigger errors
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 
+-- Auto-update enrolled_count on batch changes
+CREATE OR REPLACE FUNCTION public.update_batch_enrolled_count()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    IF NEW.current_batch_id IS NOT NULL THEN
+      UPDATE batches SET enrolled_count = enrolled_count + 1 WHERE id = NEW.current_batch_id;
+    END IF;
+    RETURN NEW;
+  END IF;
+
+  IF TG_OP = 'UPDATE' THEN
+    IF OLD.current_batch_id IS DISTINCT FROM NEW.current_batch_id THEN
+      IF OLD.current_batch_id IS NOT NULL THEN
+        UPDATE batches SET enrolled_count = GREATEST(0, enrolled_count - 1) WHERE id = OLD.current_batch_id;
+      END IF;
+      IF NEW.current_batch_id IS NOT NULL THEN
+        UPDATE batches SET enrolled_count = enrolled_count + 1 WHERE id = NEW.current_batch_id;
+      END IF;
+    END IF;
+    RETURN NEW;
+  END IF;
+
+  IF TG_OP = 'DELETE' THEN
+    IF OLD.current_batch_id IS NOT NULL THEN
+      UPDATE batches SET enrolled_count = GREATEST(0, enrolled_count - 1) WHERE id = OLD.current_batch_id;
+    END IF;
+    RETURN OLD;
+  END IF;
+
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
+DROP TRIGGER IF EXISTS trg_update_batch_enrolled_count ON student_profiles;
+CREATE TRIGGER trg_update_batch_enrolled_count
+  AFTER INSERT OR UPDATE OR DELETE ON student_profiles
+  FOR EACH ROW EXECUTE FUNCTION public.update_batch_enrolled_count();
+
+-- RPC helper
+CREATE OR REPLACE FUNCTION public.increment_enrolled_count(batch_uuid UUID)
+RETURNS void AS $$
+BEGIN
+  UPDATE batches SET enrolled_count = enrolled_count + 1 WHERE id = batch_uuid;
+END;
+$$ LANGUAGE plpgsql SECURITY INVOKER SET search_path = public;
+
 
 -- =====================
--- SEED DATA
+-- 8. LOCK DOWN ALL FUNCTIONS (fix security linter warnings)
+-- =====================
+-- Trigger function: nobody should call directly, only the trigger uses it
+REVOKE ALL ON FUNCTION public.update_batch_enrolled_count() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.update_batch_enrolled_count() FROM anon;
+REVOKE ALL ON FUNCTION public.update_batch_enrolled_count() FROM authenticated;
+
+-- increment helper: only authenticated admins via server-side API route
+REVOKE ALL ON FUNCTION public.increment_enrolled_count(UUID) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.increment_enrolled_count(UUID) FROM anon;
+
+-- handle_new_user: only the trigger calls it
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM anon;
+REVOKE ALL ON FUNCTION public.handle_new_user() FROM authenticated;
+
+
+-- =====================
+-- 9. SEED DATA
 -- =====================
 INSERT INTO branches (id, name, address, city, state, pincode, phone, email)
 VALUES (
@@ -584,8 +637,7 @@ ON CONFLICT (id) DO NOTHING;
 
 
 -- =====================
--- ENSURE PROFILE EXISTS FOR CURRENT USERS
--- (catches users created before the trigger was set up)
+-- 10. ENSURE SUPERADMIN EXISTS
 -- =====================
 INSERT INTO public.profiles (id, full_name, email, role, is_active)
 SELECT 
@@ -599,7 +651,5 @@ WHERE email = 'fskp7527@gmail.com'
 ON CONFLICT (id) DO UPDATE SET role = 'superadmin', is_active = true;
 
 
--- =====================
--- VERIFY: This should print your profile
--- =====================
+-- DONE!
 SELECT id, email, role, is_active FROM profiles;
